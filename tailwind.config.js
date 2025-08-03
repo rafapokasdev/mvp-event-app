@@ -1,3 +1,5 @@
+const { hairlineWidth } = require('nativewind/theme');
+
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
@@ -11,7 +13,10 @@ module.exports = {
         error: "#ef4444",
         dark: "#1f2937",
         light: "#f9fafb"
-      }
+      },
+      borderWidth: {
+        hairline: hairlineWidth(),
+      },
     }
   },
   plugins: []

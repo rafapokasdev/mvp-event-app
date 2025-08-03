@@ -7,7 +7,8 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  StyleSheet
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -53,41 +54,40 @@ export default function Login() {
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
+      style={styles.container}
     >
       <LinearGradient
         colors={['#6366f1', '#8b5cf6']}
-        className="flex-1"
+        style={styles.gradient}
       >
         <ScrollView 
-          contentContainerStyle={{ flexGrow: 1 }}
-          className="flex-1"
+          contentContainerStyle={styles.scrollContent}
+          style={styles.scroll}
         >
-          <View className="flex-1 justify-center px-8">
+          <View style={styles.content}>
             
             {/* Header */}
-            <View className="items-center mb-12">
-              <View className="w-20 h-20 bg-white/20 rounded-full items-center justify-center mb-6">
+            <View style={styles.header}>
+              <View style={styles.iconContainer}>
                 <Ionicons name="ticket" size={40} color="white" />
               </View>
-              <Text className="text-white text-3xl font-bold">EventApp</Text>
-              <Text className="text-white/80 text-lg mt-2">Gestão de Eventos</Text>
+              <Text style={styles.title}>EventApp</Text>
+              <Text style={styles.subtitle}>Gestão de Eventos</Text>
             </View>
 
             {/* Form */}
-            <View className="bg-white rounded-2xl p-6 shadow-lg">
-              <Text className="text-2xl font-bold text-gray-800 text-center mb-8">
-                Entrar
-              </Text>
+            <View style={styles.formContainer}>
+              <Text style={styles.formTitle}>Entrar</Text>
 
               {/* Email Input */}
-              <View className="mb-4">
-                <Text className="text-gray-700 mb-2 font-medium">Email</Text>
-                <View className="flex-row items-center bg-gray-50 rounded-xl px-4 py-3">
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Email</Text>
+                <View style={styles.inputContainer}>
                   <Ionicons name="mail" size={20} color="#6b7280" />
                   <TextInput
-                    className="flex-1 ml-3 text-gray-800"
+                    style={styles.input}
                     placeholder="seu@email.com"
+                    placeholderTextColor="#9ca3af"
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
@@ -97,13 +97,14 @@ export default function Login() {
               </View>
 
               {/* Password Input */}
-              <View className="mb-6">
-                <Text className="text-gray-700 mb-2 font-medium">Senha</Text>
-                <View className="flex-row items-center bg-gray-50 rounded-xl px-4 py-3">
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Senha</Text>
+                <View style={styles.inputContainer}>
                   <Ionicons name="lock-closed" size={20} color="#6b7280" />
                   <TextInput
-                    className="flex-1 ml-3 text-gray-800"
+                    style={styles.input}
                     placeholder="Sua senha"
+                    placeholderTextColor="#9ca3af"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
@@ -122,48 +123,186 @@ export default function Login() {
               <TouchableOpacity
                 onPress={handleLogin}
                 disabled={loading}
-                className={`py-4 rounded-xl mb-4 ${
-                  loading ? 'bg-gray-400' : 'bg-primary'
-                }`}
+                style={[styles.loginButton, loading && styles.loginButtonDisabled]}
               >
-                <Text className="text-white text-center text-lg font-semibold">
+                <Text style={styles.loginButtonText}>
                   {loading ? 'Entrando...' : 'Entrar'}
                 </Text>
               </TouchableOpacity>
 
               {/* Test Users */}
-              <View className="border-t border-gray-200 pt-4">
-                <Text className="text-gray-600 text-center mb-3 text-sm">
-                  Usuários de teste:
-                </Text>
-                <View className="flex-row space-x-2">
+              <View style={styles.testUsersContainer}>
+                <Text style={styles.testUsersTitle}>Usuários de teste:</Text>
+                <View style={styles.testUsersButtons}>
                   <TouchableOpacity
                     onPress={() => fillTestUser('admin')}
-                    className="flex-1 py-2 px-3 bg-orange-100 rounded-lg"
+                    style={styles.testButtonAdmin}
                   >
-                    <Text className="text-orange-600 text-center text-sm font-medium">
-                      Admin
-                    </Text>
+                    <Text style={styles.testButtonAdminText}>Admin</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => fillTestUser('user')}
-                    className="flex-1 py-2 px-3 bg-blue-100 rounded-lg"
+                    style={styles.testButtonUser}
                   >
-                    <Text className="text-blue-600 text-center text-sm font-medium">
-                      Usuário
-                    </Text>
+                    <Text style={styles.testButtonUserText}>Usuário</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
 
             {/* Footer */}
-            <Text className="text-white/60 text-center mt-8 text-sm">
-              Versão 1.0.0 - MVP
-            </Text>
+            <Text style={styles.footer}>Versão 1.0.0 - MVP</Text>
           </View>
         </ScrollView>
       </LinearGradient>
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 32,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  iconContainer: {
+    width: 80,
+    height: 80,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  title: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 18,
+    marginTop: 8,
+  },
+  formContainer: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  formTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  inputGroup: {
+    marginBottom: 16,
+  },
+  label: {
+    color: '#374151',
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  input: {
+    flex: 1,
+    marginLeft: 12,
+    color: '#1f2937',
+    fontSize: 16,
+  },
+  loginButton: {
+    backgroundColor: '#6366f1',
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+    marginTop: 8,
+  },
+  loginButtonDisabled: {
+    backgroundColor: '#9ca3af',
+  },
+  loginButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  testUsersContainer: {
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+    paddingTop: 16,
+  },
+  testUsersTitle: {
+    color: '#6b7280',
+    textAlign: 'center',
+    marginBottom: 12,
+    fontSize: 14,
+  },
+  testUsersButtons: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  testButtonAdmin: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#fed7aa',
+    borderRadius: 8,
+  },
+  testButtonAdminText: {
+    color: '#ea580c',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  testButtonUser: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#dbeafe',
+    borderRadius: 8,
+  },
+  testButtonUserText: {
+    color: '#2563eb',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  footer: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    textAlign: 'center',
+    marginTop: 32,
+    fontSize: 14,
+  },
+});
