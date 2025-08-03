@@ -22,3 +22,4 @@ export interface AuthState {
   login: (email: string, password: string) => Promise<LoginResult>;
   logout: () => void;
 }
+

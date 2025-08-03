@@ -31,13 +31,29 @@ export default function Login() {
     }
 
     setLoading(true);
-    const result = await login(email, password);
-    setLoading(false);
-
-    if (result.success) {
-      // Navegação será feita automaticamente pelo index.tsx
-    } else {
-      Alert.alert('Erro', result.error || 'Erro desconhecido');
+    console.log('Iniciando login...');
+    
+    try {
+      const result = await login(email, password);
+      console.log('Resultado do login:', result);
+      
+      if (result.success) {
+        console.log('Login bem-sucedido, redirecionando...');
+        setLoading(false);
+        if (useAuthStore.getState().userType === 'admin') {
+          router.replace('/admin');
+        } else {
+          router.replace('/home');
+        }
+        return;
+      } else {
+        setLoading(false);
+        Alert.alert('Erro', result.error || 'Erro desconhecido');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Erro no login:', error);
+      Alert.alert('Erro', 'Erro inesperado durante o login');
     }
   };
 
@@ -92,6 +108,7 @@ export default function Login() {
                     onChangeText={setEmail}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    editable={!loading}
                   />
                 </View>
               </View>
@@ -108,6 +125,7 @@ export default function Login() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
+                    editable={!loading}
                   />
                   <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                     <Ionicons 
@@ -137,12 +155,14 @@ export default function Login() {
                   <TouchableOpacity
                     onPress={() => fillTestUser('admin')}
                     style={styles.testButtonAdmin}
+                    disabled={loading}
                   >
                     <Text style={styles.testButtonAdminText}>Admin</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => fillTestUser('user')}
                     style={styles.testButtonUser}
+                    disabled={loading}
                   >
                     <Text style={styles.testButtonUserText}>Usuário</Text>
                   </TouchableOpacity>
